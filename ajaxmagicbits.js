@@ -1,3 +1,34 @@
+/*WELCOME TO AJAX MAGIC BITS OPEN SOURCE*
+ * PhpMagic bits or PMB is an open source library template for the most basic mysqli functions in php to the advanced php calls such as file upload, write read and Simple UX ui functions.
+ *
+ *
+ * PHP version 2.0
+ *
+  ===================================================================================================================================
+  Copyright 2020 ASANETIC TECHNOLOGIES
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+  ===================================================================================================================================
+ *
+ * @category   JAVASCRIPT Library
+ * @package    AJAX MAGIC BITS
+ * @author     JEREMIAH ASANYA FOUNDER : ASANETIC TECHNOLOGIES <jereasanya@gmail.com>
+ * @copyright  ASANETIC TECHNOLOGIES
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @version    2.0
+ * @link       https://github.com/Asanetic/phpmagicbits
+ * @DOCUMENTATION : https://github.com/Asanetic/phpmagicbits/blob/master/README.md
+*/
+
+//++++++++++++++++++++++++++++++++++ begin Library ++++++++++++++++++++++++++++++
+
+
+
 var magic_css= magic_css();
 var drop_css= drop_css();
 
@@ -28,9 +59,114 @@ function magic_clean_str (str) {
     });
 }
 
+///=========================== RANDOM STRING
+function magic_random_str(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+///=========================== TIME MANAGER
+
+function magic_current_date()
+{
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  current_today = mm+'-'+dd+'-'+ yyyy;
+
+  return current_today;
+}
+
+function magic_current_month()
+{
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+
+  return mm;
+}
+function magic_current_year()
+{
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+
+  return yyyy;
+}
+
+///=========================== TIME MANAGER
+
+
+function magic_create_cookie(cname, cvalue) {
+  var expires = "expires=2147483647";
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";";
+}
+
+function magic_cookie_value(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+}
+
+function magic_destroy_cookie(cname) {
+  document.cookie = cname + "=; -2147483647;"
+}
+
+
+
+function magic_ajax_spinner(spinner)
+{
+    $('#'+spinner+'').hide();
+    
+    $(document).ajaxStart(function() {
+    $('#'+spinner+'').show();
+    });
+    
+    $(document).ajaxStop(function() {
+    $('#'+spinner+'').hide();
+    });
+}
+
+
+function magic_spinner_box(message_to_display, attach_to, spinnerid)
+{
+
+var alert_box=
+'<!-- The Modal -->'+
+  '<div id="'+spinnerid+'" class="msg_alert_modal"style="z-index:9999999; background-color:rgba(0,0,0,0.04);" onclick="this.style.display=\'none\';">'+
+    '<!-- Modal content -->'+
+    '<div class="msg_modal-content">'+
+      '<p>'+message_to_display+'</p>'+
+    '</div>'+
+  '</div>';
+
+  document.getElementById(attach_to).innerHTML=alert_box;
+
+
+return alert_box;
+}
+
 
 //====================== create message pop ups ==========================
-function magic_message(message_to_display)
+function magic_message(message_to_display, attach_to)
 {
 
 
@@ -44,11 +180,12 @@ magic_css+'<!-- The Modal -->'+
       '</div>'+
     '</div>';
 
+  document.getElementById(attach_to).innerHTML=alert_box;
 
 return alert_box;
 }
 
-function magic_screen(message_to_display)
+function magic_screen(message_to_display, attach_to)
 {
 
  var alert_box=
@@ -61,13 +198,14 @@ magic_css+'<!-- The Modal -->'+
       '</div>'+
     '</div>';
 
+  document.getElementById(attach_to).innerHTML=alert_box;
 
-return $alert_box;
+return  alert_box;
 }
 
 
 
-function magic_modal(message_to_display)
+function magic_modal(message_to_display, attach_to)
 {
 
  var alert_box=
@@ -80,12 +218,13 @@ function magic_modal(message_to_display)
           '</div>'+
         '</div>';
 
+  document.getElementById(attach_to).innerHTML=alert_box;
 
 return alert_box;
 }
 
 
-function magic_error_message(message_to_display)
+function magic_error_message(message_to_display, attach_to)
 {
 
     var alert_box=
@@ -97,11 +236,12 @@ function magic_error_message(message_to_display)
                 '<p style="color:#FFF;">'+message_to_display+'</p>'+
               '</div>'+
             '</div>';
+  document.getElementById(attach_to).innerHTML=alert_box;
 
     return alert_box;
 }
 
-function magic_button(name_n_id, value_text, additional_attributes)
+function magic_button(name_n_id, value_text, additional_attributes, attach_to)
 {
 
 
@@ -109,28 +249,34 @@ function magic_button(name_n_id, value_text, additional_attributes)
 
     var btnstr=newbtn;
 
+    document.getElementById(attach_to).innerHTML=newbtn;
+
     return btnstr;
 
 }
 
-function magic_input(name_n_id, placeholder, additional_attributes)
+function magic_input(name_n_id, placeholder, additional_attributes, attach_to)
 {
 
     var newtxt='<input type="text" name="'+name_n_id+'" id="'+name_n_id+'" placeholder="'+placeholder+'" class="form-control" '+additional_attributes+'/>';
 
     var txtstr=newtxt;
 
+    document.getElementById(attach_to).innerHTML=newtxt;
+
     return txtstr;
 
 }
 
-function magic_plain_button(name_n_id, name_text, additional_attributes)
+function magic_plain_button(name_n_id, name_text, additional_attributes, attach_to)
 {
 
 
     var newbtn='<div name="'+name_n_id+'" id="'+name_n_id+'" class="btn btn-primary" '+additional_attributes+'>'+name_text+'</div>';
 
     var pbtnstr=newbtn;
+
+    document.getElementById(attach_to).innerHTML=newbtn;
 
     return pbtnstr;
 
@@ -145,15 +291,15 @@ function magic_dropdown(title, dropdown_items, inline_css_yes_no)
             var inline_css="";
         }
 
-      var dropdown = 
+      var mg_dropdown = 
       inline_css+'<div class="table_cell_dropdown">'+
           '<div class="table_cell_dropbtn">'+title+'</div>'+
           '<div class="table_cell_dropdown-content">'+
-            +dropdown_items+
+            dropdown_items
           '</div>'+
         '</div>';
 
-        return dropdown;
+        return mg_dropdown;
 
 }
 
@@ -165,6 +311,8 @@ function magic_link(location, name_text, additional_attributes)
 
     var linkstr=newlinkstr;
 
+    document.getElementById(attach_to).innerHTML=newlinkstr;
+
     return linkstr;
 
 }
@@ -175,6 +323,8 @@ function magic_button_link(location, name_text, additional_attributes)
     var newlinkstr='<a href="'+location+'" class="btn btn-primary" '+additional_attributes+'>'+name_text+'</a>';
 
     var linkstr=newlinkstr;
+
+    document.getElementById(attach_to).innerHTML=newlinkstr;
 
     return linkstr;
 
@@ -228,7 +378,7 @@ function magic_validate_required(message_to_display, attach_to)
 
 
 
-function magic_validate_required(message_to_display, attach_to)
+function magic_validate_email_required(message_to_display, attach_to)
 {
 
 
@@ -293,3 +443,85 @@ function drop_css(){
 
 
 //====================== create message pop ups ==========================
+function magic_yes_no_alert(message_to_display, attach_to, yes_function, no_function)
+{
+  var alert_box=
+  '<!-- The Modal -->'+
+    '<div id="del_msg_alert_myModal" class="msg_alert_modal" onclick="this.style.display=\'none\';" style="z-index:99999;">'+
+      '<!-- Modal content -->'+
+      '<div class="msg_modal-content">'+
+        '<span class="msg_modalclose" onclick="document.getElementById(\'del_msg_alert_myModal\').style.display=\'none\';">&times;</span>'+
+        '<p>'+message_to_display+'</p>'+
+        '<hr>'+
+        '<button type="button" class="btn btn-sm btn-primary" onclick="document.getElementById(\'del_msg_alert_myModal\').style.display=\'none\';'+yes_function+'">Yes</button>'+
+        '<button type="button" class="btn btn-sm btn-primary" onclick="document.getElementById(\'del_msg_alert_myModal\').style.display=\'none\';'+no_function+'" style="margin-left:30px;">Cancel</button>'+
+      '</div>'+
+    '</div>';
+
+    document.getElementById(attach_to).innerHTML=alert_box;
+
+
+  return alert_box;
+}
+//************************************************************ Begin Of pagination Function **************************************
+function create_dropdown_pagination(record_count, request_page, appendto)
+{
+
+   var current_page_label='<em id="'+appendto+'_curr_page" style="padding-right:10px;"> Showing Page 1</em>';
+
+  if(request_page!=""){
+   var current_page_label='<em id="'+appendto+'_curr_page" style="padding-right:10px;"> Showing Page '+request_page+'</em>';
+  }
+
+   var current_page_label_id =document.getElementById(appendto+'_curr_page');
+  
+
+  if (typeof(current_page_label_id) != 'undefined' && current_page_label_id != null)
+    {
+          
+     document.getElementById(appendto+'_curr_page').remove();
+
+    }
+      
+
+
+    var populate_drop_down = '';
+
+    var drop_down_page_count=parseInt(record_count)+1;
+
+    for(var i = 1; i < drop_down_page_count; i++){
+
+      populate_drop_down +=
+      '<option value="'+i+'">'+i+'</option>';
+    }
+
+
+    document.getElementById(appendto).innerHTML='<option>Go To</option>'+populate_drop_down;
+
+    $('#'+appendto+'').before(current_page_label);
+
+}
+
+
+
+function magic_ajax(function_name, params, callback_function_string, additional_callbacks)
+{
+      $.ajax({ 
+      url: "./ajaxmagicbits.php",
+      type: "POST",
+      data: {
+        '_magicbit_php_call_':'',
+        'function_name':function_name,
+        'function_params':(params) 
+      },
+
+      success: function (data) {
+
+        window[callback_function_string](data, additional_callbacks);
+
+      }
+
+  })
+
+}
+
