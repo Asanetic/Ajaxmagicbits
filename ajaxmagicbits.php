@@ -1822,4 +1822,293 @@ function drop_css(){
 
 
 
+function magic_send_mail($to_email, $from_email, $sender_name, $subject, $message)
+{
+	// create email headers
+	$replyto_mail="";
+
+	if($from_email!='')
+	{
+    	$replyto_mail='Reply-To: ' . $from_email . "\r\n";
+	}
+
+	$busmail=$from_email;
+	$bus_name=$sender_name;
+
+	if($to_email=='')
+	{
+		$busmail='info@clearphrases.com';
+	}
+
+	if($sender_name=='')
+	{
+		$bus_name="";
+	}
+
+
+    $headers = 'From: '.$bus_name.'<'.$busmail.'>' . "\r\n";
+    $headers.=$replyto_mail;
+    $headers.='Content-type: text/html; charset=iso-8859-1'. "\r\n";
+    $headers.='X-Mailer: PHP/' . phpversion();
+
+    mail($to_email, $subject, $message, $headers);        
+
+}
+
+
+function push_to_paypal($tel_no, $amount_ksh,$ref_no,$app_name,$app_logo_url,$app_slogan)
+
+{
+		global $error_message;
+	if($tel_no=='')
+	{
+		$error_message ="tel_no required";
+	}elseif ($amount_ksh=='')
+	 {
+		$error_message ="amount_ksh required";
+
+	}elseif ($ref_no=='')
+	 
+	{
+		$error_message ="ref_no required";
+	}elseif ($app_name=="")
+	 {
+		$error_message="app_name required";
+	}else{
+
+
+ header('location:https://clearphrases.com/payport/lipa-na-mpesa/paypal_api?payport_online&paidamt='.base64_encode($amount_ksh).'&accno='.base64_encode($ref_no).'&telno='.base64_encode($tel_no).'&request_app_name='.base64_encode($app_name).'&request_app_logo='.base64_encode($app_logo_url).'&request_app_slogan='.base64_encode($app_slogan).'');
+	}
+
+	return $error_message;
+}
+
+function push_to_mpesa($tel_no, $amount_ksh,$ref_no,$app_name,$app_logo_url,$app_slogan)
+{
+	global $error_message;
+	if($tel_no=='')
+	{
+		$error_message ="tel_no required";
+	}elseif ($amount_ksh=='')
+	 {
+		$error_message ="amount_ksh required";
+
+	}elseif ($ref_no=='')
+	 
+	{
+		$error_message ="ref_no required";
+	}elseif ($app_name=="")
+	 {
+		$error_message="app_name required";
+	}else{
+	header('location:https://clearphrases.com/payport/lipa-na-mpesa/buy?payport_online&paidamt='.base64_encode($amount_ksh).'&accno='.base64_encode($ref_no).'&telno='.base64_encode($tel_no).'&request_app_name='.base64_encode($app_name).'&request_app_logo='.base64_encode($app_logo_url).'&request_app_slogan='.base64_encode($app_slogan).'');
+	}
+
+	return $error_message;
+}
+
+function magic_rel2abs( $rel, $base ) 
+{
+
+	// parse base URL  and convert to local variables: $scheme, $host,  $path
+	extract( parse_url( $base ) );
+
+	if ( strpos( $rel,"//" ) === 0 ) {
+		return $scheme . ':' . $rel;
+	}
+
+	// return if already absolute URL
+	if ( parse_url( $rel, PHP_URL_SCHEME ) != '' ) {
+		return $rel;
+	}
+
+	// queries and anchors
+	if ( $rel[0] == '#' || $rel[0] == '?' ) {
+		return $base . $rel;
+	}
+
+	// remove non-directory element from path
+	$path = preg_replace( '#/[^/]*$#', '', $path );
+
+	// destroy path if relative url points to root
+	if ( $rel[0] ==  '/' ) {
+		$path = '';
+	}
+
+	// dirty absolute URL
+	$abs = $host . $path . "/" . $rel;
+
+	// replace '//' or  '/./' or '/foo/../' with '/'
+	$abs = preg_replace( "/(\/\.?\/)/", "/", $abs );
+	$abs = preg_replace( "/\/(?!\.\.)[^\/]+\/\.\.\//", "/", $abs );
+
+	// absolute URL is ready!
+	return $scheme . '://' . $abs;
+}
+
+function magic_trx_listener($write_to)
+{
+
+	global $return_trx_str;
+
+	$return_trx_str='<?php
+header("Content-Type:application/json");
+
+//====================== GET RESPONSE JSON DATA FROM CURL; COMMENT THIS LINE WHEN USING SAMPLE DATA ==========
+
+$paybilljson = file_get_contents(\'php://input\');
+
+//====================== GET RESPONSE JSON DATA FROM CURL; COMMENT THIS LINE WHEN USING SAMPLE DATA ==========
+
+
+//====================== SAMPLE JSON DATA FROM CURL; COMMENT THIS LINE WHEN USING lIVE DATA ==========
+//   $paybilljson=\'{
+//             "TransactionType": "Pay Bill",
+//             "TransID": "TEST-SANDBOX",
+//             "TransTime": "\'.date("d-m-Y h:i:s").\'",
+//             "TransAmount": "10000.00",
+//             "BusinessShortCode": "XXX-XXX-XXX",
+//             "BillRefNumber": "EBK-5N02",
+//             "InvoiceNumber": "EBK-5N02",
+//             "OrgAccountBalance": "000.00",
+//             "ThirdPartyTransID": "0",
+//             "MSISDN": "+254-000-000-000",
+//             "FirstName": "ASANETIC",
+//             "MiddleName": "TECHNOLOGIES",
+//             "LastName": "INC."
+//         }\';
+        
+//====================== SAMPLE JSON DATA FROM CURL; COMMENT THIS LINE WHEN USING lIVE DATA ==========
+
+
+            
+//====================== GET JSON DATA  FROM DECODED JSON ARRAY ==========
+
+$trx_record = json_decode($paybilljson, true);
+
+$tr_type=$trx_record[\'TransactionType\'];
+$trans_id=$trx_record[\'TransID\'];
+$TransTime=$trx_record[\'TransTime\'];
+$TransAmount=$trx_record[\'TransAmount\'];
+$BusinessShortCode=$trx_record[\'BusinessShortCode\'];
+$BillRefNumber=$trx_record[\'BillRefNumber\'];
+$OrgAccountBalance=$trx_record[\'OrgAccountBalance\'];
+$ThirdPartyTransID=$trx_record[\'ThirdPartyTransID\'];
+$MSISDN=$trx_record[\'MSISDN\'];
+$FirstName=$trx_record[\'FirstName\'];
+$MiddleName=$trx_record[\'MiddleName\'];
+$LastName=$trx_record[\'LastName\'];
+
+//====================== GET JSON DATA  FROM DECODED JSON ARRAY ==========
+
+
+//====================== GET BillRefNumber PREFIX AND SUFFIX ==========
+$explode_BillRefNumber=explode("-",$BillRefNumber);
+$BillRefNumber_prefix=$explode_BillRefNumber[0];
+$BillRefNumber_suffix=$explode_BillRefNumber[1];
+//====================== GET BillRefNumber PREFIX AND SUFFIX ==========
+
+//====================== INSERT INTO DB ADD, ANY RELEVANT CODE HERE ==========
+
+$post_params=\'{"primkey":"NULL","transaction_id":"\'.$trans_id.\'","transaction_ref":"\'.$BillRefNumber.\'","order_no":"\'.$BillRefNumber.\'","date_of_transaction":"\'.date("d-m-Y h:i:s A").\'","month_year":"\'.date("M-Y").\'","client_id":"\'.date("dmYAhis").\'","fname":"\'.$FirstName.\'","mname":"\'.$MiddleName.\'","lname":"\'.$LastName.\'","email":"","mobile":"\'.$MSISDN.\'","amount":"\'.$TransAmount.\'","type":"Income","transaction_remark":"\'.$tr_type.\'","transaction_status":"Complete","filter_date":"","time_stamp":"\'.date("d-m-Y h:i:s A").\'","site_id":"","tab_type":"","receipt_no":"\'.$trans_id.\'","admin_id":"","payment_mode":"Paybill"}\';
+
+magic_sql_insert("transactions",$post_params);
+
+//====================== INSERT INTO DB ADD, ANY RELEVANT CODE HERE ==========
+
+?>';
+
+if($write_to!=""){
+
+  		$file_to_write = fopen($write_to, 'w') or die("can't open file");
+		fwrite($file_to_write, $return_trx_str);
+		fclose($file_to_write);
+	}
+
+
+	return $return_trx_str;
+
+
+
+
+
+
+}
+
+
+function magic_split_str($text, $length, $maxLength)
+{
+ //Text length
+ $textLength = strlen($text);
+
+//echo "text length ".$textLength;
+ //initialize empty array to store split text
+ $splitText = array();
+
+ //return without breaking if text is already short
+ if (!($textLength > $maxLength)){
+  $splitText[] = $text;
+  return $splitText;
+ }
+
+ //Guess sentence completion
+ $needle = '.';
+
+ /*iterate over $text length 
+   as substr_replace deleting it*/  
+ while (strlen($text) > $length){
+
+  $end = strpos($text, $needle, $length);
+
+  if ($end === false){
+
+   //Returns FALSE if the needle (in this case ".") was not found.
+   $splitText[] = substr($text,0);
+   $text = '';
+   break;
+
+  }
+
+  $end++;
+
+  $splitText[] = substr($text,0,$end);
+  $text = substr_replace($text,'',0,$end);
+
+ }
+ 
+ if ($text){
+  $splitText[] = substr($text,0);
+ }
+
+return $splitText;
+}
+
+function magic_post_curl($curlopt_url, $curlopt_httpheader, $curlopt_userpwd, $curlopt_post_fields)
+{
+	global $curl_post_response;
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $post_url);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+		curl_setopt($ch, CURLOPT_USERPWD, $acc_id.":".$acc_token);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields);
+
+		$curl_post_response = curl_exec($ch);
+
+	return $curl_post_response;
+}
+
+if(isset($_POST["camp_shortenurl"])){
+
+$new_short_url=file_get_contents('http://tinyurl.com/api-create.php?url='.$_POST['camp_shortenurl']);
+
+
+
+echo $new_short_url;
+}
+
 ?>
