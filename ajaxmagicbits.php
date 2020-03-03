@@ -29,7 +29,7 @@
 /////// ================ INCLUDE YOUR DB CONNECTION FILE HERE 
 //DECLARE DATABASE AS $single_db AND MYSQLI CONNECTION AS $single_conn
 
-include("../common/includes/conn_config.php");
+//include("./connections_config.php");
 /////// ================ INCLUDE YOUR DB CONNECTION FILE HERE 
 
 //++++++++++++++++++++++++++++++++++ begin Library ++++++++++++++++++++++++++++++
@@ -2104,8 +2104,11 @@ function magic_post_curl($curlopt_url, $curlopt_httpheader, $curlopt_userpwd, $c
 
 if(isset($_POST["camp_shortenurl"])){
 
+if($_POST["camp_shortenurl"]!=''){
 $new_short_url=file_get_contents('http://tinyurl.com/api-create.php?url='.$_POST['camp_shortenurl']);
-
+}else{
+	$new_short_url="";
+}
 
 
 echo $new_short_url;
