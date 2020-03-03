@@ -107,12 +107,14 @@ function magic_current_year()
 ///=========================== TIME MANAGER
 
 
-function magic_create_cookie(cname, cvalue) {
+function magic_create_cookie(cname, cvalue) 
+{
   var expires = "expires=2147483647";
   document.cookie = cname + "=" + cvalue + ";" + expires + ";";
 }
 
-function magic_cookie_value(cname) {
+function magic_cookie_value(cname)
+ {
   var name = cname + "=";
   var ca = document.cookie.split(';');
   for(var i = 0; i < ca.length; i++) {
@@ -132,7 +134,7 @@ function magic_destroy_cookie(cname) {
 
 
 
-function magic_ajax_spinner(spinner)
+function magic_ajax_spinner(spinner,message)
 {
     $('#'+spinner+'').hide();
     
@@ -143,6 +145,10 @@ function magic_ajax_spinner(spinner)
     $(document).ajaxStop(function() {
     $('#'+spinner+'').hide();
     });
+    
+    if(message!==""){
+    $('#'+spinner+'').html(message);
+    }
 }
 
 
@@ -151,14 +157,18 @@ function magic_spinner_box(message_to_display, attach_to, spinnerid)
 
 var alert_box=
 '<!-- The Modal -->'+
+'<style>.spinner_css_div{position: fixed;top: 10px;z-index: 99999990;left: 29%;}@media screen and (max-width:700px){.spinner_css_div{position: fixed;top: 10px;z-index: 99999990;left: 1%;}}</style>'+
   '<div id="'+spinnerid+'" class="msg_alert_modal"style="z-index:9999999; background-color:rgba(0,0,0,0.04);" onclick="this.style.display=\'none\';">'+
     '<!-- Modal content -->'+
-    '<div class="msg_modal-content">'+
+    '<div class="msg_modal-content spinner_css_div">'+
       '<p>'+message_to_display+'</p>'+
     '</div>'+
   '</div>';
 
+if(attach_to!='')
+{
   document.getElementById(attach_to).innerHTML=alert_box;
+}
 
 
 return alert_box;
@@ -180,7 +190,10 @@ magic_css+'<!-- The Modal -->'+
       '</div>'+
     '</div>';
 
+if(attach_to!='')
+{
   document.getElementById(attach_to).innerHTML=alert_box;
+}
 
 return alert_box;
 }
@@ -190,15 +203,17 @@ function magic_screen(message_to_display, attach_to)
 
  var alert_box=
 magic_css+'<!-- The Modal -->'+
-    '<div id="msg_alert_myModal" class="msg_alert_modal"style="z-index:99999;">'+
+    '<div id="msg_alert_myModal" class="msg_alert_modal"style="z-index:99;">'+
       '<!-- Modal content -->'+
       '<div class="msg_modal-content">'+
         '<span class="btn btn-primary" onclick="document.getElementById(\'msg_alert_myModal\').style.display=\'none\';" style="float:right;">&times;</span>'+
         '<p>'+message_to_display+'</p>'+
       '</div>'+
     '</div>';
-
+if(attach_to!='')
+{
   document.getElementById(attach_to).innerHTML=alert_box;
+}
 
 return  alert_box;
 }
@@ -218,7 +233,10 @@ function magic_modal(message_to_display, attach_to)
           '</div>'+
         '</div>';
 
+if(attach_to!='')
+{
   document.getElementById(attach_to).innerHTML=alert_box;
+}
 
 return alert_box;
 }
@@ -236,7 +254,11 @@ function magic_error_message(message_to_display, attach_to)
                 '<p style="color:#FFF;">'+message_to_display+'</p>'+
               '</div>'+
             '</div>';
-  document.getElementById(attach_to).innerHTML=alert_box;
+
+            if(attach_to!='')
+            {
+              document.getElementById(attach_to).innerHTML=alert_box;
+            }
 
     return alert_box;
 }
@@ -249,7 +271,11 @@ function magic_button(name_n_id, value_text, additional_attributes, attach_to)
 
     var btnstr=newbtn;
 
+    if(attach_to!='')
+    {
     document.getElementById(attach_to).innerHTML=newbtn;
+    }
+
 
     return btnstr;
 
@@ -262,7 +288,11 @@ function magic_input(name_n_id, placeholder, additional_attributes, attach_to)
 
     var txtstr=newtxt;
 
+    if(attach_to!='')
+    {
     document.getElementById(attach_to).innerHTML=newtxt;
+    }
+
 
     return txtstr;
 
@@ -276,8 +306,10 @@ function magic_plain_button(name_n_id, name_text, additional_attributes, attach_
 
     var pbtnstr=newbtn;
 
+    if(attach_to!='')
+    {
     document.getElementById(attach_to).innerHTML=newbtn;
-
+    }
     return pbtnstr;
 
 }
@@ -304,28 +336,33 @@ function magic_dropdown(title, dropdown_items, inline_css_yes_no)
 }
 
 
-function magic_link(location, name_text, additional_attributes)
+function magic_link(location, name_text, additional_attributes, attach_to)
 {
 
     var newlinkstr='<a href="'+location+'"  '+additional_attributes+'>'+name_text+'</a>';
 
     var linkstr=newlinkstr;
 
+    if(attach_to!='')
+    {
     document.getElementById(attach_to).innerHTML=newlinkstr;
+    }
 
     return linkstr;
 
 }
 
-function magic_button_link(location, name_text, additional_attributes)
+function magic_button_link(location, name_text, additional_attributes, attach_to)
 {
 
     var newlinkstr='<a href="'+location+'" class="btn btn-primary" '+additional_attributes+'>'+name_text+'</a>';
 
     var linkstr=newlinkstr;
 
+    if(attach_to!='')
+    {
     document.getElementById(attach_to).innerHTML=newlinkstr;
-
+    }
     return linkstr;
 
 }
@@ -425,7 +462,7 @@ function magic_validate_email_required(message_to_display, attach_to)
 function magic_css(){
 
 
-    var magic_css='<style> .msg_alert_modal{display:block;position:fixed;z-index:1;padding-top:100px;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,.4)}.msg_modal-content{background-color:#fefefe;margin:auto;padding:20px;border:1px solid #888;width:40%}.msg_modal-content_banner{background-color:#fefefe;margin:auto;padding:20px;border:1px solid #888;width:52%;font-size:16px}.msg_modalclose{color:#aaa;float:right;font-size:28px;font-weight:700}.msg_modalclose:focus,.msg_modalclose:hover{color:#000;text-decoration:none;cursor:pointer}.validate_error_class{font-size:11px;color:red}.hide_error_class{display:none}</style>';
+    var magic_css='<style> .msg_alert_modal{display:block;position:fixed;z-index:1;padding-top:100px;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:#000;background-color:rgba(0,0,0,.4)}.msg_modal-content{background-color:#fefefe;margin:auto;padding:20px;border:1px solid #888;width:40%}.msg_modal-content_banner{background-color:#fefefe;margin:auto;padding:20px;border:1px solid #888;width:52%;font-size:16px}.msg_modalclose{color:#aaa;float:right;font-size:28px;font-weight:700}.msg_modalclose:focus,.msg_modalclose:hover{color:#000;text-decoration:none;cursor:pointer}.validate_error_class{font-size:11px;color:red}.hide_error_class{display:none}@media screen and (max-width:700px){.msg_modal-content{width:98%}.msg_modal-content_banner{padding:5px;width:98%}}</style>';
 
 
     return magic_css;
@@ -458,8 +495,10 @@ function magic_yes_no_alert(message_to_display, attach_to, yes_function, no_func
       '</div>'+
     '</div>';
 
+    if(attach_to!='')
+    {
     document.getElementById(attach_to).innerHTML=alert_box;
-
+    }
 
   return alert_box;
 }
@@ -524,4 +563,41 @@ function magic_ajax(function_name, params, callback_function_string, additional_
   })
 
 }
+
+function magic_post_to_ajax(post_url, json_params, post_name, callback_function_string, additional_callbacks)
+{
+
+      $.ajax({ 
+      url: post_url,
+      type: "POST",
+      data: {
+        'post_name':post_name,
+        'post_data':json_params
+      },
+
+      success: function (data) {
+
+        window[callback_function_string](data, additional_callbacks);
+
+      }
+
+  })
+
+}
+
+function magic_get_url_param(paramname)
+ {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === paramname) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
 
