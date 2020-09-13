@@ -601,3 +601,14 @@ function magic_get_url_param(paramname)
     }
 };
 
+function magic_disable_input(curr_form_name, newbgcolor)
+{
+
+var f = document.forms[curr_form_name];
+for(var i=0,fLen=f.length;i<fLen;i++){
+  f.elements[i].readOnly = true;//As @oldergod noted, the "O" must be upper case
+  f.elements[i].disabled = true;//As @oldergod noted, the "O" must be upper case
+  f.elements[i].style.backgroundColor=newbgcolor;
+
+}
+}
